@@ -1,0 +1,23 @@
+#ignore object files.
+*.obj
+
+#ignore log files
+*.tlog
+
+#ignore manifest files
+*.manifest
+#ignore res files
+*.res
+
+#ignore log files
+*.log
+
+*.pch
+*.cache
+*.pdb
+*.idb
+
+#ignore unnessary solution files
+*.sdf
+*.suo
+*.opensdf
