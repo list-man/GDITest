@@ -4,7 +4,6 @@
 #include "../ImageLoader/ImageCacher.h"
 #include "./ImageFilterParser.h"
 #include "../ImageLoader/ImageHelper.h"
-#include "../ImageLoader/BitmapHelper.h"
 
 #ifdef WIN32
 #include "./GDI/Render_GDI.h"
@@ -152,47 +151,6 @@ namespace glib
                 CRect(_rcDest.left, _rcDest.top, _rcDest.left + _rcSrc.Width(), _rcDest.top + _rcSrc.Height()),
                 _rcSrc);
         }
-
-        return hResult;
-    }
-
-    HRESULT GRender::FillRect(Canvas _canvas, const CRect& _rcDest, DWORD _dwClr)
-    {
-        HRESULT hResult = S_FALSE;
-
-        do 
-        {
-            HBITMAP hBitmap = NULL;
-            unsigned char* pData = NULL;
-            CBitmapHelper::CreateBitmap32(_rcDest.Width(), _rcDest.Height(),
-                hBitmap, &pData, true, ((_dwClr >> 24) & 0xFF));
-
-            if (!hBitmap) break;
-
-            CDC dc;
-            dc.CreateCompatibleDC(_canvas);
-            dc.SelectBitmap(hBitmap);
-            //dc.FillSolidRect(&_rcDest, _dwClr);
-            HBRUSH hBrush = ::CreateSolidBrush(_dwClr);
-            ::FillRect(dc, &_rcDest, hBrush);
-            ::DeleteObject(hBrush);
-
-            BYTE cAlphaValue = (_dwClr >> 24) & 0xFF;
-            if (cAlphaValue != 0)
-            {
-                for (int i = 0; i < _rcDest.Width() * _rcDest.Height(); i++)
-                {
-                    BYTE* pPixel = (BYTE*)((DWORD*)pData) + i;
-                    pPixel[3] = cAlphaValue;
-                    pPixel[0] = pPixel[0] * cAlphaValue / 255;
-                    pPixel[1] = pPixel[1] * cAlphaValue / 255;
-                    pPixel[2] = pPixel[2] * cAlphaValue / 255;
-                }
-            }
-
-            DrawImage(_canvas, hBitmap, cAlphaValue!=0, _rcDest, _rcDest);
-            ::DeleteObject(hBitmap);
-        } while (false);
 
         return hResult;
     }

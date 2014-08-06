@@ -31,8 +31,6 @@ namespace glib
         static HRESULT RenderImageStretch(Canvas _canvas, std::shared_ptr<STImage> _spImage, 
                             const CRect& _rcDest, const CRect& _rcSrc,
                             ENStretchMode _eStretchMode, const MARGINS& _margins);
-
-        static HRESULT FillRect(Canvas _canvas, const CRect& _rcDest, DWORD _dwClr);
     };
 }
 

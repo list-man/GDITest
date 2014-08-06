@@ -37,26 +37,8 @@ LRESULT CMainFrame::OnPaint(UINT uMsg, WPARAM wParam, LPARAM lParam, BOOL& bHand
         &pData, true, 0xFF);
     dcMem.SelectBitmap(hBitmap);
 
-    {
-        HBITMAP hBitmap1 = NULL;
-        unsigned char* pData1 = NULL;
-        glib::CBitmapHelper::CreateBitmap32(rcClient.Width(), rcClient.Height(), hBitmap1,
-            &pData1, true, 0xFF);
-
-        CDC dc1;
-        dc1.CreateCompatibleDC(dcMem);
-        dc1.SelectBitmap(hBitmap1);
-        dc1.FillSolidRect(rcClient, RGB(0xFF, 0, 0));
-
-        ::BitBlt(dcMem, 0, 0, rcClient.Width(), rcClient.Height(), dc1, 0, 0, SRCCOPY);
-        ::DeleteObject(hBitmap1);
-    }
-
-    // BitBlt不会把像素拷贝到选中的位图中去？上面的实验证明不是的，那是为什么呢？
-    //dcMem.FillSolidRect(rcClient, RGB(0xFF, 0, 0xFF));
-    glib::CanvasT<false> canvas(m_hWnd, dcMem);
-    //glib::GRender::FillRect(canvas, rcClient, RGB(0xFF, 0xFF, 0xFF));
-    //glib::GRender::RenderImage(, rcClient, L"file=bkgnd.png");
+    dcMem.FillSolidRect(rcClient, RGB(0xFF, 0xFF, 0xFF));
+    glib::GRender::RenderImage(glib::CanvasT<false>(m_hWnd, dcMem), rcClient, L"file=bkgnd.png");
 
     ::DeleteObject(hBitmap);
 
