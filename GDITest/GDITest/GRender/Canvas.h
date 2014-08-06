@@ -3,23 +3,19 @@
 
 namespace glib
 {
-    template <bool t_bManaged>
-    class CanvasT
+    class Canvas
     {
     public:
 #ifdef WIN32
-        CanvasT(HWND _hWnd, HDC _hDC) :
-          m_hWnd(_hWnd), m_hDC(_hDC), 
-          m_iWidth(0), m_iHeight(0)
+        Canvas(HDC _hDC, int _iWidth, int _iHeight) :
+          m_hDC(_hDC), 
+          m_iWidth(_iWidth),
+          m_iHeight(_iHeight)
           {
           }
 
-          virtual ~CanvasT()
+          virtual ~Canvas()
           {
-              if (t_bManaged)
-              {
-                  ::ReleaseDC(m_hWnd, m_hDC);
-              }
           }
 
           operator HDC() const { return m_hDC; }
@@ -37,9 +33,6 @@ namespace glib
         int m_iWidth;
         int m_iHeight;
     };
-
-    //typedef CanvasT<false> CanvasHandle;
-    typedef CanvasT<false>  Canvas;
 }
 
 #endif // _AD7E36D9_C821_4AF4_A564_F2F4D0DE2960_H_

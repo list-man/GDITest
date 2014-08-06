@@ -35,6 +35,8 @@ HRESULT DrawOpaqueBitmap(HDC _hDC, HBITMAP& _hBitmap,
         CDC dcMem;
         dcMem.CreateCompatibleDC(_hDC);
         dcMem.SelectBitmap(_hBitmap);
+        BITMAP bi = {0};
+        GetObject(_hBitmap, sizeof(bi), &bi);
         BOOL bResult = ::BitBlt(_hDC, 
                             _rcDest.left, _rcDest.top, _rcDest.Width(), _rcDest.Height(),
                             dcMem,

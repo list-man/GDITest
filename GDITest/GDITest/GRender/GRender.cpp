@@ -171,8 +171,8 @@ namespace glib
 
             CDC dc;
             dc.CreateCompatibleDC(_canvas);
-            dc.SelectBitmap(hBitmap);
-            //dc.FillSolidRect(&_rcDest, _dwClr);
+            HBITMAP hBmpOld = dc.SelectBitmap(hBitmap);
+
             HBRUSH hBrush = ::CreateSolidBrush(_dwClr);
             ::FillRect(dc, &_rcDest, hBrush);
             ::DeleteObject(hBrush);
@@ -190,6 +190,10 @@ namespace glib
                 }
             }
 
+            //dc.SelectBitmap(hBmpOld);
+
+            BITMAP bi = {0};
+            GetObject(hBitmap, sizeof(bi), &bi);
             DrawImage(_canvas, hBitmap, cAlphaValue!=0, _rcDest, _rcDest);
             ::DeleteObject(hBitmap);
         } while (false);
